@@ -1,0 +1,89 @@
+@font-face {
+  font-family: 'tnr';
+  src: 
+  url('tnr.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'times';
+  src: 
+  url('times.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'c';
+  src: 
+  url('c.woff2') format('woff2');
+}
+html {
+  font-size: 10px;
+  font-family: 'tnr',sans-serif;
+}
+
+
+h1 {
+  font-size: 16vw;
+  text-align: center;
+  font-family: 'tnr',sans-serif;
+}
+h2 {
+  font-size: 3.6vw;
+  text-align: center;
+  font-family: 'times',sans-serif;
+  color:rgb(192, 255, 255);
+}
+h3 {
+  margin: 1.5vw;
+  font-size: 3.6vw;
+  text-align: center;
+  font-family: 'times',sans-serif;
+}
+
+p {
+  font-size: 2vw;
+  font-family: 'times',sans-serif;
+}
+h4{
+  font-size: 5vw;
+  font-family: 'times',sans-serif;
+}
+
+
+html {
+  background: linear-gradient(45deg, #00ff80, #0080ff);
+}
+
+body {
+  width: 75%;
+  margin: 2vw auto;
+  background-color: #c0ffff;
+  padding: 2vw 2vw 2vw 2vw;
+  border: 0.5vw solid #006060;
+}
+
+h1 {
+  margin: 0;
+  padding: 0 0;
+   /* 设置文字颜色为透明 */
+  /*text-shadow: 0.3vw 0.3vw 2vw #ffffff;*/
+}
+
+
+img {
+  display: block;
+  width: 100%;
+}
+div{
+  display:table-cell;
+  vertical-align: bottom;
+}
+.gd1 {
+        background: linear-gradient(150deg, #0080ff,#00ff80 );
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+.cbb{
+  text-decoration: none;
+  background: linear-gradient(45deg, #00ff80, #0080ff);
+  -webkit-background-clip: text; /* 将背景裁剪到文字 */
+  color: transparent;
+}
