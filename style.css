@@ -13,7 +13,7 @@
 @font-face {
   font-family: 'c';
   src:
-    url('c.woff2') format('woff2');
+    url('c.ttf') format('truetype');
 }
 
 html {
