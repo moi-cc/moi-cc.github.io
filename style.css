@@ -1,19 +1,17 @@
 @font-face {
-  font-family: 'tnr';
-  src:
-    url('tnr.woff2') format('woff2');
-}
-
-@font-face {
   font-family: 'times';
   src:
     url('times.woff2') format('woff2');
 }
-
+@font-face {
+  font-family: 'tnr';
+  src:
+    url('tnr.woff2') format('woff2');
+}
 @font-face {
   font-family: 'c';
   src:
-    url('c.ttf') format('truetype');
+    url('c.woff2') format('woff2');
 }
 
 html {
