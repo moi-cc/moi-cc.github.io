@@ -1,21 +1,322 @@
 <!DOCTYPE html>
-<html lang="zh">
-
+<html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <title>ɕ.cc</title>
-  </head>
+    <meta charset="UTF-8">
+    <title>法国共和十进制时钟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* 微调间距，整体更居中 */
+            padding-top: 60px;
+            min-height: 100vh;
+            background: #121218;
+            color: #eee;
+            font-family: system-ui;
+        }
+        /* 顶部单行文字，加大字号 */
+        .top-link {
+            
+            text-align: center;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        .web-url {
+            font-size: 27px;
+            color: #ff4455; /* 共和红 */
+        }
+        .mail-url {
+            font-size: 21px;
+            color: #5a98f0; /* 共和蓝 */
+            margin-left: 12px;
+        }
+        .rep-date {
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+            text-align: center;
+            line-height: 1.8;
+        }
+        /* 中文日期大号字体 + 共和蓝 */
+        .cn-date {
+            font-size: 22px;
+            color: #5a98f0;
+        }
+        /* 法语通用小字 */
+        .fr-normal {
+            font-size: 15px;
+            color: #c0d8f8;
+        }
+        /* 法语日期数字/月份 放大突出 */
+        .fr-accent {
+            font-size: 20px;
+            color: #e6f0ff;
+            font-weight: 500;
+            margin: 0 4px;
+        }
+        .rep-clock {
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: #1e1e28;
+            position: relative;
+            border: 6px solid #444;
+            box-shadow: 0 0 40px rgba(80,120,255,0.15);
+        }
+        .tick {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transform: rotate(var(--deg));
+            font-size: 26px;
+            font-weight: 500;
+            padding: 14px;
+            color: #ccc;
+        }
+        .tick span {
+            display: inline-block;
+            transform: rotate(calc(-1 * var(--deg)));
+        }
+        .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+        }
+        .rep-hour {
+            width: 9px;
+            height: 90px;
+            background: #f0f0f0;
+            margin-left: -4.5px;
+            z-index: 3;
+        }
+        .rep-min {
+            width: 6px;
+            height: 120px;
+            background: #8899bb;
+            margin-left: -3px;
+            z-index: 2;
+        }
+        .rep-sec {
+            width: 3px;
+            height: 145px;
+            background: #ff4455;
+            margin-left: -1.5px;
+            z-index: 1;
+        }
+        .center-dot {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        /* 时间数字 放大 */
+        .time-num {
+            font-size: 32px;
+            letter-spacing: 2px;
+            color: #a0c8f8;
+            font-variant-numeric: tabular-nums;
+        }
+        /* 共和时间 中英双语说明 */
+        .time-desc {
+            margin-top: 6px;
+            font-size: 16px;
+            color: #c0d8f8;
+            text-align: center;
+        }
+        .time-wrap {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 合并为一行，蓝+红配色 -->
+    <div class="top-link">
+        <span class="web-url">ɕ.cc</span>
+        <span class="mail-url">c@ɕ.cc</span>
+    </div>
 
-<body bgcolor="#002153">
-<div style="margin:auto;text-align: center;">
-  <p><a href="http://ɕ.cc/" style="text-decoration: none;color: rgb(255,255,255);font-size: 20vw;
-  ">ɕ.cc</a><br><span style="font-size: 3vw;color: rgb(255,255,255);">c@ɕ.cc</span><br><span style="font-size: 4vw;color: rgb(255,255,255);">Huludao City,China</span></p>
+    <div class="rep-date" id="repDate"></div>
 
-</div>
+    <div class="rep-clock">
+        <div class="tick" style="--deg:0deg"><span>0</span></div>
+        <div class="tick" style="--deg:36deg"><span>1</span></div>
+        <div class="tick" style="--deg:72deg"><span>2</span></div>
+        <div class="tick" style="--deg:108deg"><span>3</span></div>
+        <div class="tick" style="--deg:144deg"><span>4</span></div>
+        <div class="tick" style="--deg:180deg"><span>5</span></div>
+        <div class="tick" style="--deg:216deg"><span>6</span></div>
+        <div class="tick" style="--deg:252deg"><span>7</span></div>
+        <div class="tick" style="--deg:288deg"><span>8</span></div>
+        <div class="tick" style="--deg:324deg"><span>9</span></div>
 
+        <div class="hand rep-hour" id="rh"></div>
+        <div class="hand rep-min" id="rm"></div>
+        <div class="hand rep-sec" id="rs"></div>
+        <div class="center-dot"></div>
+    </div>
 
+    <div class="time-wrap">
+        <div class="time-num" id="timeNum"></div>
+        <div class="time-desc" id="timeDesc"></div>
+    </div>
 
+<script>
+const rh = document.getElementById('rh');
+const rm = document.getElementById('rm');
+const rs = document.getElementById('rs');
+const timeNum = document.getElementById('timeNum');
+const timeDesc = document.getElementById('timeDesc');
+const repDateEl = document.getElementById('repDate');
+
+const STANDARD_DAY_SEC = 86400;
+const REP_DAY_SEC = 100000;
+
+// 共和历月份 中文 / 法语
+const repMonths = [
+    ["葡月", "Vendémiaire"],
+    ["雾月", "Brumaire"],
+    ["霜月", "Frimaire"],
+    ["雪月", "Nivôse"],
+    ["雨月", "Pluviôse"],
+    ["风月", "Ventôse"],
+    ["芽月", "Germinal"],
+    ["花月", "Floréal"],
+    ["牧月", "Prairial"],
+    ["获月", "Messidor"],
+    ["热月", "Thermidor"],
+    ["果月", "Fructidor"]
+];
+const extraDaysName = "无套裤汉节";
+
+// 补零
+function padZero(num, length = 2) {
+    return Math.floor(num).toString().padStart(length, '0');
+}
+
+// 公历闰年判断
+function isGregLeapYear(y) {
+    return (y % 4 === 0 && y % 100 !== 0) || (y % 400 === 0);
+}
+
+// 共和n年 → 公历 n + 1792 年 判断闰年
+function isRepLeapYear(repYear) {
+    const gregYear = repYear + 1792;
+    return isGregLeapYear(gregYear);
+}
+
+// 计算共和历日期
+function getRepublicanDate(now) {
+    const baseDate = new Date(1792, 8, 22); // 共和元年元旦：1792-09-22
+    const curr = new Date(now);
+    const msPerDay = 86400000;
+    let diffDays = Math.floor((curr - baseDate) / msPerDay);
+    if (diffDays < 0) return null;
+
+    let repYear = 1;
+    while (true) {
+        const daysThisYear = isRepLeapYear(repYear) ? 366 : 365;
+        if (diffDays < daysThisYear) break;
+        diffDays -= daysThisYear;
+        repYear++;
+    }
+
+    const totalMonthDays = 360;
+    let repMonth, repDay, isExtraDay = false;
+    if (diffDays < totalMonthDays) {
+        repMonth = Math.floor(diffDays / 30);
+        repDay = (diffDays % 30) + 1;
+    } else {
+        repMonth = 12;
+        repDay = diffDays - totalMonthDays + 1;
+        isExtraDay = true;
+    }
+    return { repYear, repMonth, repDay, isExtraDay };
+}
+
+// 更新日期显示
+function updateRepDate() {
+    const now = new Date();
+    const dateInfo = getRepublicanDate(now);
+    if (!dateInfo) {
+        repDateEl.innerText = "日期超出范围";
+        return;
+    }
+    const { repYear, repMonth, repDay, isExtraDay } = dateInfo;
+
+    if (isExtraDay) {
+        const cnText = `现在是共和${repYear}年 ${extraDaysName} 第${repDay}日`;
+        const frHtml = `<span class="fr-normal">Nous sommes l'an</span>
+                        <span class="fr-accent">${repYear}</span>
+                        <span class="fr-normal">de la République, jour</span>
+                        <span class="fr-accent">${repDay}</span>
+                        <span class="fr-normal">des Sans-culottides</span>`;
+        repDateEl.innerHTML = `<div class="cn-date">${cnText}</div><div>${frHtml}</div>`;
+    } else {
+        const [cnMonth, frMonth] = repMonths[repMonth];
+        const cnText = `现在是共和${repYear}年 ${cnMonth} ${repDay}日`;
+        const frHtml = `<span class="fr-normal">Nous sommes l'an</span>
+                        <span class="fr-accent">${repYear}</span>
+                        <span class="fr-normal">de la République, le</span>
+                        <span class="fr-accent">${repDay} ${frMonth}</span>`;
+        repDateEl.innerHTML = `<div class="cn-date">${cnText}</div><div>${frHtml}</div>`;
+    }
+}
+
+// 更新时钟与时间文本
+function updateRepClock() {
+    const now = new Date();
+    const h = now.getHours();
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    const ms = now.getMilliseconds();
+    const stdTotalSec = h * 3600 + m * 60 + s + ms / 1000;
+
+    const repTotalSec = stdTotalSec / STANDARD_DAY_SEC * REP_DAY_SEC;
+
+    const repHour = Math.floor(repTotalSec / 10000);
+    const remAfterHour = repTotalSec % 10000;
+    const repMin = Math.floor(remAfterHour / 100);
+    const repSecFull = remAfterHour % 100;
+
+    const hourDeg = repHour * 36 + repMin * 0.36;
+    const minDeg = repMin * 3.6 + repSecFull * 0.036;
+    const secDeg = repSecFull * 3.6;
+
+    rh.style.transform = `rotate(${hourDeg}deg)`;
+    rm.style.transform = `rotate(${minDeg}deg)`;
+    rs.style.transform = `rotate(${secDeg}deg)`;
+
+    const fixedTwo = repSecFull.toFixed(2);
+    let [secInt, secDec] = fixedTwo.split('.');
+    secInt = padZero(secInt);
+    secDec = padZero(secDec);
+    const mStr = padZero(repMin);
+
+    // 上方：大号时间数字
+    timeNum.textContent = `${repHour}:${mStr}:${secInt}.${secDec}`;
+    // 下方：共和时间 + 法语
+    timeDesc.textContent = `共和时间 | Heure Républicaine`;
+
+    updateRepDate();
+}
+
+updateRepClock();
+setInterval(updateRepClock, 50);
+</script>
+</body>
 </html>
-
-
-
